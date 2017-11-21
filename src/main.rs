@@ -31,7 +31,8 @@ struct ResJ {
     filename: String
 }
 
-fn send_post(client: reqwest::Client, text: String, file_format:&str, filename:&str) -> String {
+
+fn send_post(client: reqwest::Client, text: String, file_format:&str) -> String {
     let jsont = JSON{code: String::from(text), format: String::from(file_format)};
     let json = serde_json::to_string(&jsont).expect("no");
 
@@ -42,20 +43,19 @@ fn send_post(client: reqwest::Client, text: String, file_format:&str, filename:&
     dd.filename
 }
 
-fn send_get(filename: &String){
+
+fn send_get(filename: &String, filenname: &str){
     let url = String::from("http://63.142.251.124:80/api/v2/") + filename;
     println!("{}", &url);
     let mut resp = reqwest::get(&url).expect("No");
-    // let mut content = String::new();
-    // resp.read_to_string(&mut content).expect("no");
-    // println!("{:?}",resp.text().expect("no") );
-    // let mut file = File::create("out.pdf").expect("no");
-    // file.write_all(content.as_bytes()).expect("no");
-    // file.sync_all().expect("no");
+	let mut file = File::create(filenname).expect("no");
+	resp.copy_to(&mut file);
+    file.sync_all().expect("no"); 
 }
+
 
 fn main() {
     let clnt = reqwest::Client::new();
-    let filename = send_post(clnt, String::from(TEXT), "pdf", "out.pdf");
-    send_get(&filename);
+    let filename = send_post(clnt, String::from(TEXT), "png");
+    send_get(&filename, "out.png");
 }
