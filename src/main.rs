@@ -4,12 +4,10 @@ extern crate serde;
 extern crate serde_derive;
 extern crate reqwest;
 
-
-use serde::{Serialize, Deserialize};
 use std::fs::File;
-use std::io::prelude::*;
 
 mod latex;
+mod config;
 
 static TEXT: &'static str = r"\documentclass{article}
 \begin{document}
@@ -21,7 +19,9 @@ This is \LaTeX!
 
 
 fn main() {
-    let clnt = reqwest::Client::new();
-    let filename = latex::send_post(clnt, String::from(TEXT), "png");
-    latex::send_get(&filename, "out.png");
+    // let clnt = reqwest::Client::new();
+    // let filename = latex::send_post(clnt, String::from(TEXT), "png");
+    // latex::send_get(&filename, "out.png");
+    print!("");
+    println!("TOKEN: {}", config::token());
 }
