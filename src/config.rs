@@ -5,14 +5,14 @@ use std::io::prelude::*;
 
 
 #[derive(Serialize, Deserialize)]
-struct Config {
+pub struct Config {
     token: String,
     latex: bool
 }
 
 fn read_config() {
     let file = File::open("config.json"); 
-    let config_file = match file {
+    let _ = match file {
         Ok(file) => file,
 
         Err(_) => {
@@ -30,8 +30,8 @@ fn read_config() {
     };
 }
 
-pub fn token() -> String {
-    read_config();
+pub fn config() -> Config{
+        read_config();
     let mut file = File::open("config.json")
             .expect("Failed to open config");
 
@@ -41,5 +41,9 @@ pub fn token() -> String {
 
     let json: Config = from_str(&contents)
             .expect("Failed to parse JSON");
-    json.token
+    json
+}
+
+pub fn token() -> String {
+    config().token
 }

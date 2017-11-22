@@ -1,10 +1,16 @@
-extern crate serde_json;
-extern crate serde;
+extern crate reqwest;
+extern crate serenity;
+
 #[macro_use]
 extern crate serde_derive;
-extern crate reqwest;
+extern crate serde;
+extern crate serde_json;
 
 use std::fs::File;
+use serenity::prelude::*;
+use serenity::model::*;
+use std::env;
+
 
 mod latex;
 mod config;
@@ -17,11 +23,27 @@ This is \LaTeX!
 \end{document}
 ";
 
+struct Handler;
+
+impl EventHandler for Handler {
+    fn on_message(&self, _: Context, msg: Message){
+        if msg.content == ">><<" {
+            println!("LOL");
+        }
+    }
+    
+    
+    fn on_ready(&self, _: Context, ready: Ready) {
+        println!("{} is connected!", ready.user.name);
+    }
+}
 
 fn main() {
-    // let clnt = reqwest::Client::new();
-    // let filename = latex::send_post(clnt, String::from(TEXT), "png");
-    // latex::send_get(&filename, "out.png");
-    print!("");
-    println!("TOKEN: {}", config::token());
+    let token: String = config::token();
+    let mut client = Client::new(&token, Handler);
+
+    if let Err(why) = client.start() {
+        println!("Client error: {:?}", why);
+    }
+
 }
