@@ -1,4 +1,3 @@
-use std::fs::OpenOptions;
 use ::File;
 use ::serde_json::{from_reader, to_writer_pretty, from_str};
 use std::io::Read;
@@ -17,7 +16,8 @@ fn read_config() {
         Ok(file) => file,
 
         Err(_) => {
-            let new_config = File::create("config.json").expect("Failed to create file");
+            let new_config = File::create("config.json")
+                    .expect("Failed to create file");
 
             let default = Config{
                 token: String::from("Insert token here"),
@@ -32,9 +32,14 @@ fn read_config() {
 
 pub fn token() -> String {
     read_config();
-    let mut file = File::open("config.json").expect("Failed to open config");
+    let mut file = File::open("config.json")
+            .expect("Failed to open config");
+
     let mut contents = String::new();
-    file.read_to_string(&mut contents).expect("Failed to read config");
-    let json: Config = from_str(&contents).expect("Failed to parse JSON");
+    file.read_to_string(&mut contents)
+            .expect("Failed to read config");
+
+    let json: Config = from_str(&contents)
+            .expect("Failed to parse JSON");
     json.token
 }
