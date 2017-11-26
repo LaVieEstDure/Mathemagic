@@ -43,7 +43,8 @@ fn send_get(filename: &String, filenname: &str){
 }
 
 pub fn render_latex(latex: String, format:&str) -> File {
-    let mut client = ::reqwests::Client();
-    let filename = send_post(client, format);
-    send_get(filename, "out.png")
+    let mut client = ::reqwest::Client::new();
+    let filename = send_post(client, latex, format);
+    send_get(&filename, "out.png");
+    File::open(&filename).expect("Couldnt open file")
 }
