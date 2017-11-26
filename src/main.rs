@@ -1,4 +1,5 @@
 extern crate reqwest;
+#[macro_use]
 extern crate serenity;
 
 #[macro_use]
@@ -26,24 +27,30 @@ This is \LaTeX!
 struct Handler;
 
 impl EventHandler for Handler {
-    fn on_message(&self, _: Context, msg: Message){
-        if msg.content == ">><<" {
-            println!("LOL");
-        }
-    }
-    
-    
+
     fn on_ready(&self, _: Context, ready: Ready) {
-        println!("{} is connected!", ready.user.name);
+        println!("Connection successful! \n {} is connected!", ready.user.name);
     }
+
 }
 
+command!()
+
 fn main() {
+    
     let token: String = config::token();
     let mut client = Client::new(&token, Handler);
 
     if let Err(why) = client.start() {
         println!("Client error: {:?}", why);
     }
+
+    client.with_framework(
+        StandardFramework::new()
+            .configure(|c| c.prefix("+="))
+            .on("ping", ping))
+            .delimiters(vec!(", ", ","))
+            .
+            
 
 }

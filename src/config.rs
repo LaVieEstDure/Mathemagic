@@ -1,7 +1,7 @@
 use ::File;
-use ::serde_json::{from_reader, to_writer_pretty, from_str};
 use std::io::Read;
 use std::io::prelude::*;
+use ::serde_json::{from_reader, to_writer_pretty, from_str};
 
 
 #[derive(Serialize, Deserialize)]
@@ -11,12 +11,12 @@ pub struct Config {
 }
 
 fn read_config() {
-    let file = File::open("config.json"); 
+    let file = File::open("config.json");
     let _ = match file {
         Ok(file) => file,
 
         Err(_) => {
-            let new_config = File::create("config.json")
+            let new_config = File::create("config.json") 
                     .expect("Failed to create file");
 
             let default = Config{

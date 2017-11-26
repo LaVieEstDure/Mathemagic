@@ -16,7 +16,7 @@ struct ResJ {
 }
 
 
-pub fn send_post(client: reqwest::Client, text: String, file_format:&str) -> String {
+fn send_post(client: reqwest::Client, text: String, file_format:&str) -> String {
     let jsont = JSON{code: String::from(text), format: String::from(file_format)};
     let json = serde_json::to_string(&jsont)
             .expect("Failed to convert request to JSON");
@@ -30,7 +30,7 @@ pub fn send_post(client: reqwest::Client, text: String, file_format:&str) -> Str
 }
 
 
-pub fn send_get(filename: &String, filenname: &str){
+fn send_get(filename: &String, filenname: &str){
     let url = String::from("http://63.142.251.124:80/api/v2/") + filename;
     println!("{}", &url);
     let mut resp = reqwest::get(&url)
@@ -40,4 +40,10 @@ pub fn send_get(filename: &String, filenname: &str){
     let _copy = resp.copy_to(&mut file);
     file.sync_all()
             .expect("Failed to write output file"); 
+}
+
+pub fn render_latex(latex: String, format:&str) -> File {
+    let mut client = ::reqwests::Client();
+    let filename = send_post(client, format);
+    send_get(filename, "out.png")
 }
