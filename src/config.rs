@@ -1,7 +1,6 @@
 use ::File;
 use std::io::Read;
-use std::io::prelude::*;
-use ::serde_json::{from_reader, to_writer_pretty, from_str};
+use ::serde_json::{to_writer_pretty, from_str};
 
 
 #[derive(Serialize, Deserialize)]
